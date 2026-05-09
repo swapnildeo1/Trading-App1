@@ -1,0 +1,21 @@
+{
+    "name": "QuantumTrade Alerts",
+    "short_name": "QTrade",
+    "description": "Live F&O Trading Alerts and Dashboard",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#0B0F19",
+    "theme_color": "#0B0F19",
+    "icons": [
+        {
+            "src": "https://cdn-icons-png.flaticon.com/512/5738/5738077.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "https://cdn-icons-png.flaticon.com/512/5738/5738077.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
