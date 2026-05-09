@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuantumTrade | F&O Alerts</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+        <div class="login-box">
+            <div class="logo justify-center mb-6">
+                <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div class="logo-text">Quantum<span>Trade</span></div>
+            </div>
+            <h2 class="login-title">Secure Login</h2>
+            <p class="login-subtitle">Access your F&O Trading Dashboard</p>
+            
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-wrapper">
+                    <span class="prefix"><i class="fa-solid fa-user"></i></span>
+                    <input type="text" id="username" placeholder="Enter username">
+                </div>
+            </div>
+            
+            <div class="form-group mb-6">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <span class="prefix"><i class="fa-solid fa-lock"></i></span>
+                    <input type="password" id="password" placeholder="Enter password">
+                </div>
+            </div>
+            
+            <button class="btn btn-primary w-100" id="loginBtn">Login to Dashboard</button>
+            <p class="login-error" id="loginError">Invalid credentials.</p>
+            <div class="forgot-password-link">
+                <a href="#" id="forgotPasswordLnk">Forgot Password?</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal-overlay" id="forgotPasswordModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Reset Password</h2>
+                <button class="close-btn" id="closeForgotBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body" id="forgotStep1">
+                <p class="mb-6 text-secondary" style="font-size: 14px;">Enter your registered mobile number to receive an OTP.</p>
+                <div class="form-group mb-6">
+                    <label>Mobile Number</label>
+                    <div class="input-wrapper">
+                        <span class="prefix">+91</span>
+                        <input type="text" id="forgotMobile" placeholder="10-digit number">
+                    </div>
+                </div>
+                <button class="btn btn-primary w-100" id="sendOtpBtn">Send OTP</button>
+            </div>
+            <div class="modal-body" id="forgotStep2" style="display: none;">
+                <p class="mb-6 text-secondary" style="font-size: 14px;">Enter the OTP sent to your mobile and your new password.</p>
+                <div class="form-group">
+                    <label>OTP</label>
+                    <div class="input-wrapper">
+                        <span class="prefix"><i class="fa-solid fa-key"></i></span>
+                        <input type="text" id="resetOtp" placeholder="Enter 6-digit OTP">
+                    </div>
+                </div>
+                <div class="form-group mb-6">
+                    <label>New Password</label>
+                    <div class="input-wrapper">
+                        <span class="prefix"><i class="fa-solid fa-lock"></i></span>
+                        <input type="password" id="newResetPassword" placeholder="Enter new password">
+                    </div>
+                </div>
+                <button class="btn btn-primary w-100" id="resetPasswordBtn">Reset Password</button>
+                <p class="login-error" id="otpError" style="margin-top: 12px;">Invalid OTP.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container" id="appContainer" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div class="logo-text">Quantum<span>Trade</span></div>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> History</a>
+                <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i> Settings</a>
+            </nav>
+
+            <div class="system-status">
+                <div class="status-indicator live"></div>
+                <div class="status-text">System Live</div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="market-overview">
+                    <div class="ticker">
+                        <span class="ticker-name">NIFTY 50</span>
+                        <span class="ticker-price" id="nifty-price">22,450.50</span>
+                        <span class="ticker-change positive"><i class="fa-solid fa-caret-up"></i> 124.30 (0.55%)</span>
+                    </div>
+                    <div class="ticker">
+                        <span class="ticker-name">BANKNIFTY</span>
+                        <span class="ticker-price" id="banknifty-price">48,230.15</span>
+                        <span class="ticker-change negative"><i class="fa-solid fa-caret-down"></i> 45.20 (0.09%)</span>
+                    </div>
+                </div>
+                
+                <div class="user-actions">
+                    <button class="btn btn-icon" id="openSettingsBtn" title="Notification Settings">
+                        <i class="fa-regular fa-bell"></i>
+                    </button>
+                    <div class="profile-pic">
+                        <img src="https://ui-avatars.com/api/?name=Trader&background=3b82f6&color=fff" alt="User">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard">
+                <div class="dashboard-header">
+                    <h1 class="page-title">Live Trade Alerts</h1>
+                    <div class="filters">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="nifty">NIFTY</button>
+                        <button class="filter-btn" data-filter="banknifty">BANKNIFTY</button>
+                    </div>
+                </div>
+
+                <div class="alerts-grid" id="alertsGrid">
+                    <!-- Alerts will be injected here via JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Notification Settings</h2>
+                <button class="close-btn" id="closeSettingsBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-tabs" style="display: flex; gap: 16px; margin-bottom: 24px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                    <button class="tab-btn active" data-target="alerts-tab" style="background:none; border:none; color:var(--text-primary); cursor:pointer; font-weight:600; font-size:15px; padding-bottom:4px; border-bottom:2px solid var(--accent-blue);">Alerts</button>
+                    <button class="tab-btn" data-target="security-tab" style="background:none; border:none; color:var(--text-secondary); cursor:pointer; font-weight:500; font-size:15px; padding-bottom:4px; border-bottom:2px solid transparent;">Security</button>
+                </div>
+
+                <div id="alerts-tab" class="tab-content active">
+                    <div class="form-group">
+                        <label for="mobileNumber">Mobile Number</label>
+                        <div class="input-wrapper">
+                            <span class="prefix">+91</span>
+                            <input type="text" id="mobileNumber" placeholder="Enter 10-digit number" value="9876543210">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Alert Gateway</label>
+                        <div class="radio-group">
+                            <label class="radio-card">
+                                <input type="radio" name="gateway" value="whatsapp" checked>
+                                <div class="card-content">
+                                    <i class="fa-brands fa-whatsapp whatsapp-color"></i>
+                                    <span>WhatsApp</span>
+                                </div>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="gateway" value="fast2sms">
+                                <div class="card-content">
+                                    <i class="fa-solid fa-comment-sms sms-color"></i>
+                                    <span>Fast2SMS</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Indices to Monitor</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" checked> Nifty 50
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" checked> BankNifty
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox"> Sensex
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="security-tab" class="tab-content" style="display: none;">
+                    <p class="mb-6 text-secondary" style="font-size: 13px;">Update your login credentials here. Changes will take effect immediately.</p>
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <div class="input-wrapper">
+                            <span class="prefix"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" id="currentPass" placeholder="Verify current password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>New Login ID (Username)</label>
+                        <div class="input-wrapper">
+                            <span class="prefix"><i class="fa-solid fa-user"></i></span>
+                            <input type="text" id="newUserId" placeholder="Leave blank to keep current">
+                        </div>
+                    </div>
+                    <div class="form-group mb-6">
+                        <label>New Password</label>
+                        <div class="input-wrapper">
+                            <span class="prefix"><i class="fa-solid fa-key"></i></span>
+                            <input type="password" id="newPass" placeholder="Leave blank to keep current">
+                        </div>
+                    </div>
+                    <p class="login-error" id="securityError" style="margin-top:0; margin-bottom:12px;">Incorrect current password.</p>
+                </div>
+
+                <button class="btn btn-primary w-100" id="saveSettingsBtn">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template for Alert Card -->
+    <template id="alertCardTemplate">
+        <div class="alert-card animate-in">
+            <div class="card-header">
+                <div class="asset-info">
+                    <div class="asset-icon"></div>
+                    <div class="asset-details">
+                        <h3 class="asset-name"></h3>
+                        <span class="asset-direction"></span>
+                    </div>
+                </div>
+                <div class="timeframe-badge"></div>
+            </div>
+            
+            <div class="card-body">
+                <div class="setup-row">
+                    <div class="setup-item">
+                        <span class="label">Strikes</span>
+                        <span class="value strikes-val"></span>
+                    </div>
+                    <div class="setup-item risk-item">
+                        <span class="label">Risk Level</span>
+                        <span class="value risk-val badge"></span>
+                    </div>
+                </div>
+                
+                <div class="price-action">
+                    <div class="price-box entry">
+                        <span class="label">Entry Range</span>
+                        <span class="value"></span>
+                    </div>
+                    <div class="price-box sl">
+                        <span class="label">Stop Loss</span>
+                        <span class="value"></span>
+                    </div>
+                </div>
+
+                <div class="targets-container">
+                    <h4><i class="fa-solid fa-bullseye"></i> Targets (<span class="target-time"></span>)</h4>
+                    <div class="targets-list">
+                        <!-- Targets injected here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="timestamp"><i class="fa-regular fa-clock"></i> <span></span></div>
+                <div class="status-pill status-active">Active</div>
+            </div>
+        </div>
+    </template>
+
+    <script src="app.js"></script>
+</body>
+</html>
